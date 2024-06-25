@@ -25,6 +25,12 @@ class ListDevicesCommand extends Command
 	{
 		$parser = parent::buildOptionParser($parser);
 
+		$parser->addOption('with-passwords', [
+			'boolean' => true,
+			'default' => false,
+			'short' => 'p',
+		]);
+
 		return $parser;
 	}
 
@@ -49,6 +55,10 @@ class ListDevicesCommand extends Command
 		$deviceList = [];
 		foreach ($devices as $name => $device) {
 			$io->out("$i: {$name} - {$device['host']}");
+			$io->verbose(' - User: ' . $device['user']);
+			if ($args->getBooleanOption('with-passwords')) {
+				$io->verbose(' - Password: ' . $device['pass']);
+			}
 		}
 	}
 }

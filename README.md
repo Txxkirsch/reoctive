@@ -1,6 +1,6 @@
 # Description
 
-Reoctive is a small tool to help you automate your Reolink devices
+Reoctive is a small tool based on CakePHP5 to help you automate your Reolink devices
 via HTTP-Requests or cli commands.
 
 E.g. you can setup your smartphone to call the api when you enter/leave
@@ -22,10 +22,9 @@ git clone https://github.com/txxkirsch/reoctive
 composer install
 cp config/app_local.example.php config/app_local.php
 cp config/.env.example config/.env
-bin/cake migrations migrate -p Queue
 ```
 
-You can check your installation via http(s)://<your-host-domain>/reoctive/?pw=<your-api-password>
+You can check your installation via http(s)://\<your-host-domain\>/reoctive/?pw=<your-api-password>
 
 # Setup
 
@@ -37,14 +36,23 @@ nano config/.env
 
 set your values
 
+If you set an API_PASSWORD you will need to append it to every api-call as query-param (?pw=)
+
 crontab -e
 ```
 */5 * * * * cd /<path>/<to>/<your>/reoctive && bin/cake queue run -q
 ```
 
-If you set an API_PASSWORD you will need to append it to every api-call as query-param (?pw=)
+```
+bin/cake migrations migrate -p Queue
+```
 
 # Device management
+
+list devices via command
+```
+bin/cake ListDevices
+```
 
 adding device via command
 ```
