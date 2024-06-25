@@ -3,6 +3,7 @@
 namespace App\Queue\Task;
 
 use App\Provider\ReolinkProvider;
+use Cake\Core\Configure;
 use Queue\Queue\AddInterface;
 use Queue\Queue\Task;
 
@@ -28,12 +29,14 @@ class SetPushTask extends Task implements AddInterface
 			],
 		];
 
-		$provider = new ReolinkProvider('CamFlur');
-
-		$provider->sendRequest('SetPushV20', $data);
+		foreach ($data['deviceNames'] ?? [] as $deviceName) {
+			$provider = new ReolinkProvider($deviceName);
+			$provider->sendRequest('SetPushV20', $data);
+		}
 	}
 
 	public function add(?string $data): void
 	{
+		//todo
 	}
 }

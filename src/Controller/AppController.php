@@ -1,5 +1,6 @@
 <?php
-declare (strict_types = 1);
+
+declare(strict_types=1);
 
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
@@ -14,9 +15,11 @@ declare (strict_types = 1);
  * @since     0.2.9
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Exception;
 use Queue\Model\Table\QueuedJobsTable;
@@ -31,36 +34,39 @@ use Queue\Model\Table\QueuedJobsTable;
  */
 class AppController extends Controller
 {
-    protected QueuedJobsTable $QueuedJobs;
+	protected QueuedJobsTable $QueuedJobs;
 
-    /**
-     * Initialization hook method.
-     *
-     * Use this method to add common initialization code like loading components.
-     *
-     * e.g. `$this->loadComponent('FormProtection');`
-     *
-     * @return void
-     */
-    public function initialize(): void
-    {
-        parent::initialize();
+	/**
+	 * Initialization hook method.
+	 *
+	 * Use this method to add common initialization code like loading components.
+	 *
+	 * e.g. `$this->loadComponent('FormProtection');`
+	 *
+	 * @return void
+	 */
+	public function initialize(): void
+	{
+		parent::initialize();
 
-        $this->loadComponent('Flash');
+		$this->loadComponent('Flash');
 
-        $this->QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
+		$this->QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
 
-        /*
+		/*
          * Enable the following component for recommended CakePHP form protection settings.
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
-        //$this->loadComponent('FormProtection');
-    }
+		//$this->loadComponent('FormProtection');
+	}
 
-    public function beforeFilter(EventInterface $event)
-    {
-        if (strlen($this->request->getQuery('pw', '')) === 0) {
-            throw new Exception('Pissdichalde');
-        }
-    }
+	public function beforeFilter(EventInterface $event)
+	{
+		if (
+			!empty(Configure::read('Api.password'))  &&
+			Configure::read('Api.password') !== $this->request->getQuery('pw', null)
+		) {
+			throw new Exception('Invalid password');
+		}
+	}
 }

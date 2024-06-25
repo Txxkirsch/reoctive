@@ -67,6 +67,10 @@ return [
 		],
 	],
 
+	'Api' => [
+		'password' => env('API_PASSWORD', null),
+	],
+
 	/*
      * Security and encryption configuration
      *
@@ -406,5 +410,26 @@ return [
      */
 	'Session'        => [
 		'defaults' => 'php',
+	],
+
+	'Queue'          => [
+		'maxworkers'           => 2,
+		'sleeptime'            => 15,
+		'gcprob'               => 10,
+		'defaultworkerretries' => 2,
+		'workermaxruntime'     => 600,
+		'exitwhennothingtodo'  => false,
+		'ignoredTasks'         => [
+			'Queue\Queue\Task\CostsExampleTask',
+			'Queue\Queue\Task\EmailTask',
+			'Queue\Queue\Task\ExampleTask',
+			'Queue\Queue\Task\ExceptionExampleTask',
+			'Queue\Queue\Task\ExecuteTask',
+			'Queue\Queue\Task\MonitorExampleTask',
+			'Queue\Queue\Task\ProgressExampleTask',
+			'Queue\Queue\Task\RetryExampleTask',
+			'Queue\Queue\Task\SuperExampleTask',
+			'Queue\Queue\Task\UniqueExampleTask',
+		],
 	],
 ];

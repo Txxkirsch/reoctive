@@ -54,4 +54,5 @@ yarn-error.log
 
 
 config/app_local.php
+config/devices.json
 bin/

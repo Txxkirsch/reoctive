@@ -1,53 +1,95 @@
-# CakePHP Application Skeleton
+# Description
 
-![Build Status](https://github.com/cakephp/app/actions/workflows/ci.yml/badge.svg?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
-[![PHPStan](https://img.shields.io/badge/PHPStan-level%207-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
+Reoctive is a small tool to help you automate your Reolink devices
+via HTTP-Requests or cli commands.
 
-A skeleton for creating applications with [CakePHP](https://cakephp.org) 5.x.
+E.g. you can setup your smartphone to call the api when you enter/leave
+a specific WiFi in order to deactivate/active push alarms.
+So you wont get notifications when you are at home.
 
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+Reoctive is aimed to people which have some experience in programming and networking.
 
-## Installation
+If you want to call the api from outside of your network you may need a dynamic dns service.
 
-1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+# Installation
 
-If Composer is installed globally, run
+You will need a database in order to queue the events.
+Mysql/Mariadb or sqlite work fine.
+Just configure it in your config/app_local.php and run the migrations.
 
-```bash
-composer create-project --prefer-dist cakephp/app
+```
+git clone https://github.com/txxkirsch/reoctive
+composer install
+cp config/app_local.example.php config/app_local.php
+cp config/.env.example config/.env
+bin/cake migrations migrate -p Queue
 ```
 
-In case you want to use a custom app dir name (e.g. `/myapp/`):
+You can check your installation via http(s)://<your-host-domain>/reoctive/?pw=<your-api-password>
 
-```bash
-composer create-project --prefer-dist cakephp/app myapp
+# Setup
+
+nano config/app_local.php
+
+edit Datasources.default
+
+nano config/.env
+
+set your values
+
+crontab -e
+```
+*/5 * * * * cd /<path>/<to>/<your>/reoctive && bin/cake queue run -q
 ```
 
-You can now either use your machine's webserver to view the default home page, or start
-up the built-in webserver with:
+If you set an API_PASSWORD you will need to append it to every api-call as query-param (?pw=)
 
-```bash
-bin/cake server -p 8765
+# Device management
+
+adding device via command
+```
+bin/cake AddDevice
 ```
 
-Then visit `http://localhost:8765` to see the welcome page.
+deleting device via command
+```
+bin/cake RemoveDevice
+```
 
-## Update
+# Configure Events
 
-Since this skeleton is a starting point for your application and various files
-would have been modified as per your needs, there isn't a way to provide
-automated upgrades, so you have to do any updates manually.
+Configure your events in src/Event/ReolinkListener.php
 
-## Configuration
+## Preconfigured/Example Events
 
-Read and edit the environment specific `config/app_local.php` and set up the
-`'Datasources'` and any other configuration relevant for your application.
-Other environment agnostic settings can be changed in `config/app.php`.
+activate: Enables email and push notifications on all configured devices
+deactivate: Disables email and push notifications on all configured devices
 
-## Layout
+# Tasks
 
-The app skeleton uses [Milligram](https://milligram.io/) (v1.3) minimalist CSS
-framework by default. You can, however, replace it with any other library or
-custom styles.
+Adding new Tasks
+```
+bin/cake bake queue_task <Name>
+```
+
+# Usage
+
+HTTP-Get to http(s)://<your-host-domain>/reoctive/api/event/<event-name>?pw=<your-api-password>
+
+e.g. https://example.com/reoctive/api/event/activate?pw=reopassword
+
+When the endpoint gets called it will queue a task in the database.
+A queue worker will pick up the task a few seconds later and execute it.
+
+# Sources
+
+ - Reolink API Documentation
+ https://community.reolink.com/topic/4196/reolink-camera-api-user-guide_v8-updated-in-april-2023
+ 
+ - CakePHP Documentation
+ https://book.cakephp.org/5/en/index.html
+
+# ToDo
+
+simplify installation/initial configuration
+

@@ -1,54 +1,63 @@
 <?php
-declare (strict_types = 1);
+
+declare(strict_types=1);
 
 namespace App\Event;
 
 use App\Queue\Task\SetEmailTask;
 use App\Queue\Task\SetPushTask;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\ORM\Locator\LocatorAwareTrait;
 
 class ReolinkListener implements EventListenerInterface
 {
-    use LocatorAwareTrait;
+	use LocatorAwareTrait;
 
-    public function implementedEvents(): array
-    {
-        return [
-            'Reoctive.activate'   => 'activate',
-            'Reoctive.deactivate' => 'deactivate',
-        ];
-    }
+	public function implementedEvents(): array
+	{
+		return [
+			'Reoctive.activate'   => 'activate',
+			'Reoctive.deactivate' => 'deactivate',
+		];
+	}
 
-    public function activate(Event $event, array $requestData, array $options): Event
-    {
-        $QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
+	public function activate(Event $event, array $requestData, array $options): Event
+	{
+		$QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
 
-        $QueuedJobs->createJob(SetEmailTask::class, [
-            'enable' => 1,
-        ]);
+		$deviceNames = array_keys(Configure::read('Reolink', []));
 
-        $QueuedJobs->createJob(SetPushTask::class, [
-            'enable' => 1,
-        ]);
+		$QueuedJobs->createJob(SetEmailTask::class, [
+			'deviceNames' => $deviceNames,
+			'enable' => 1,
+		]);
 
-        return $event;
-    }
+		$QueuedJobs->createJob(SetPushTask::class, [
+			'deviceNames' => $deviceNames,
+			'enable' => 1,
+		]);
 
-    public function deactivate(Event $event, array $requestData, array $options): Event
-    {
-        $QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
+		return $event;
+	}
 
-        $QueuedJobs->createJob(SetEmailTask::class, [
-            'enable' => 0,
-        ]);
+	public function deactivate(Event $event, array $requestData, array $options): Event
+	{
+		$QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
 
-        $QueuedJobs->createJob(SetPushTask::class, [
-            'enable' => 0,
-        ]);
+		$deviceNames = array_keys(Configure::read('Reolink', []));
 
-        return $event;
-    }
+		$QueuedJobs->createJob(SetEmailTask::class, [
+			'deviceNames' => $deviceNames,
+			'enable' => 0,
+		]);
 
+		$QueuedJobs->createJob(SetPushTask::class, [
+			'deviceNames' => $deviceNames,
+			'enable' => 0,
+		]);
+
+		return $event;
+	}
 }
