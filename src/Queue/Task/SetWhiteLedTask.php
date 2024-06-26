@@ -17,7 +17,7 @@ class SetWhiteLedTask extends Task implements AddInterface
 	 */
 	public function run(array $data, int $jobId): void
 	{
-		$data = [
+		$deviceData = [
 			'WhiteLed' => [
 				'state'   => $data['enable'],
 				'channel' => 0,
@@ -27,7 +27,7 @@ class SetWhiteLedTask extends Task implements AddInterface
 
 		foreach ($data['deviceNames'] ?? [] as $deviceName) {
 			$provider = new ReolinkProvider($deviceName);
-			$provider->sendRequest('SetWhiteLed', $data);
+			$provider->sendRequest('SetWhiteLed', $deviceData);
 		}
 	}
 

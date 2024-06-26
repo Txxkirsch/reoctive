@@ -25,6 +25,7 @@ class ReolinkListener implements EventListenerInterface
 
 	public function activate(Event $event, array $requestData, array $options): Event
 	{
+		/** @var \Queue\Model\Table\QueuedJobsTable $QueuedJobs */
 		$QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
 
 		$deviceNames = array_keys(Configure::read('Reolink', []));
@@ -44,6 +45,7 @@ class ReolinkListener implements EventListenerInterface
 
 	public function deactivate(Event $event, array $requestData, array $options): Event
 	{
+		/** @var \Queue\Model\Table\QueuedJobsTable $QueuedJobs */
 		$QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
 
 		$deviceNames = array_keys(Configure::read('Reolink', []));

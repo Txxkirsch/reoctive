@@ -17,7 +17,7 @@ class ReolinkProvider
 
 	protected readonly string $url;
 
-	protected ?string $token = null;
+	protected static array $tokens = [];
 
 	public function __construct(protected readonly string $device)
 	{
@@ -37,6 +37,10 @@ class ReolinkProvider
 
 	protected function _login(): bool
 	{
+		if (!empty(static::$tokens[$this->device])) {
+			return true;
+		}
+
 		$request = $this->sendRequest('Login', [
 			'User' => [
 				'userName' => $this->user,
@@ -50,14 +54,14 @@ class ReolinkProvider
 			return false;
 		}
 
-		$this->token = $body['value']['Token']['name'] ?? '';
+		static::$tokens[$this->device] = $body['value']['Token']['name'] ?? null;
 
-		return true;
+		return (bool)static::$tokens[$this->device];
 	}
 
 	protected function _logout(): bool
 	{
-		if (!$this->token) {
+		if (empty(static::$tokens[$this->device])) {
 			return true;
 		}
 
@@ -69,7 +73,7 @@ class ReolinkProvider
 			return false;
 		}
 
-		$this->token = null;
+		unset(static::$tokens[$this->device]);
 
 		return true;
 	}
@@ -89,7 +93,7 @@ class ReolinkProvider
 
 		$query = http_build_query([
 			'cmd'   => $cmd,
-			'token' => $this->token ?? 'null',
+			'token' => static::$tokens[$this->device] ?? 'null',
 		]);
 
 		$url = $this->url . '?' . $query;

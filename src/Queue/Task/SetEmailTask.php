@@ -4,6 +4,7 @@ namespace App\Queue\Task;
 
 use App\Provider\ReolinkProvider;
 use Cake\Core\Configure;
+use Cake\Log\Log;
 use Queue\Queue\AddInterface;
 use Queue\Queue\Task;
 
@@ -17,7 +18,7 @@ class SetEmailTask extends Task implements AddInterface
 	 */
 	public function run(array $data, int $jobId): void
 	{
-		$data = [
+		$deviceData = [
 			'Email' => [
 				'enable'   => (int)(bool)$data['enable'],
 				// 'schedule' => [
@@ -34,7 +35,7 @@ class SetEmailTask extends Task implements AddInterface
 
 		foreach ($data['deviceNames'] ?? [] as $deviceName) {
 			$provider = new ReolinkProvider($deviceName);
-			$provider->sendRequest('SetEmailV20', $data);
+			$provider->sendRequest('SetEmailV20', $deviceData);
 		}
 	}
 

@@ -24,7 +24,7 @@ cp config/app_local.example.php config/app_local.php
 cp config/.env.example config/.env
 ```
 
-You can check your installation via http(s)://\<your-host-domain\>/reoctive/?pw=<your-api-password>
+You can check your installation via http(s)://\<your-host-domain\>/reoctive/?pw=\<your-api-password\>
 
 # Setup
 
