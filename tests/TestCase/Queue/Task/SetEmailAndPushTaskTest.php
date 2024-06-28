@@ -3,9 +3,10 @@
 namespace App\Test\TestCase\Queue\Task;
 
 use Cake\TestSuite\TestCase;
-use App\Queue\Task\SetEmailTask;
+use App\Queue\Task\SetEmailAndPushTask;
+use Cake\Core\Configure;
 
-class SetEmailTaskTest extends TestCase
+class SetEmailAndPushTaskTest extends TestCase
 {
 
 	/**
@@ -13,17 +14,18 @@ class SetEmailTaskTest extends TestCase
 	 */
 	protected array $fixtures = [
 		'plugin.Queue.QueuedJobs',
-		'plugin.Queue.QueueProcesses',
+		'app.QueuedJobs',
+		// 'plugin.Queue.QueueProcesses',
 	];
 
 	/**
 	 * @return void
 	 */
-	// public function testRun(): void {
-	// 	$task = new SetEmailTask();
+	// public function testRun(): void
+	// {
+	// 	$task = new SetEmailAndPushTask();
 
 	// 	//TODO
 	// 	//$task->run($data, $jobId);
 	// }
-
 }

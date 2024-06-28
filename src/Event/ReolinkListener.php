@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Event;
 
+use App\Queue\Task\SetEmailAndPushTask;
 use App\Queue\Task\SetEmailTask;
 use App\Queue\Task\SetPushTask;
 use Cake\Core\Configure;
@@ -30,12 +31,7 @@ class ReolinkListener implements EventListenerInterface
 
 		$deviceNames = array_keys(Configure::read('Reolink', []));
 
-		$QueuedJobs->createJob(SetEmailTask::class, [
-			'deviceNames' => $deviceNames,
-			'enable' => 1,
-		]);
-
-		$QueuedJobs->createJob(SetPushTask::class, [
+		$QueuedJobs->createJob(SetEmailAndPushTask::class, [
 			'deviceNames' => $deviceNames,
 			'enable' => 1,
 		]);
@@ -50,12 +46,7 @@ class ReolinkListener implements EventListenerInterface
 
 		$deviceNames = array_keys(Configure::read('Reolink', []));
 
-		$QueuedJobs->createJob(SetEmailTask::class, [
-			'deviceNames' => $deviceNames,
-			'enable' => 0,
-		]);
-
-		$QueuedJobs->createJob(SetPushTask::class, [
+		$QueuedJobs->createJob(SetEmailAndPushTask::class, [
 			'deviceNames' => $deviceNames,
 			'enable' => 0,
 		]);

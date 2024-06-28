@@ -5,7 +5,8 @@ namespace App\Test\TestCase\Queue\Task;
 use Cake\TestSuite\TestCase;
 use App\Queue\Task\SetPushTask;
 
-class SetPushTaskTest extends TestCase {
+class SetPushTaskTest extends TestCase
+{
 
 	/**
 	 * @var list<string>
@@ -18,11 +19,11 @@ class SetPushTaskTest extends TestCase {
 	/**
 	 * @return void
 	 */
-	public function testRun(): void {
-		$task = new SetPushTask();
+	// public function testRun(): void {
+	// 	$task = new SetPushTask();
 
-		//TODO
-		//$task->run($data, $jobId);
-	}
+	// 	//TODO
+	// 	//$task->run($data, $jobId);
+	// }
 
 }

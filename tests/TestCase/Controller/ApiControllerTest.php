@@ -1,9 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ApiController;
+use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -14,69 +16,23 @@ use Cake\TestSuite\TestCase;
  */
 class ApiControllerTest extends TestCase
 {
-    use IntegrationTestTrait;
+	use IntegrationTestTrait;
 
-    /**
-     * Fixtures
-     *
-     * @var list<string>
-     */
-    protected array $fixtures = [
-        'app.Api',
-    ];
+	/**
+	 * Fixtures
+	 *
+	 * @var list<string>
+	 */
+	// protected array $fixtures = [
+	// 	// 'app.Api',
+	// ];
 
-    /**
-     * Test index method
-     *
-     * @return void
-     * @uses \App\Controller\ApiController::index()
-     */
-    public function testIndex(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+	public function testEvent()
+	{
+		Configure::write('debug', true);
+		$this->get('/api/event/deactivate?pw=' . Configure::read('Api.password'));
 
-    /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\ApiController::view()
-     */
-    public function testView(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test add method
-     *
-     * @return void
-     * @uses \App\Controller\ApiController::add()
-     */
-    public function testAdd(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test edit method
-     *
-     * @return void
-     * @uses \App\Controller\ApiController::edit()
-     */
-    public function testEdit(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     * @uses \App\Controller\ApiController::delete()
-     */
-    public function testDelete(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
+		$this->assertResponseOk();
+		$this->assertResponseContains('Reoctive.deactivate');
+	}
 }

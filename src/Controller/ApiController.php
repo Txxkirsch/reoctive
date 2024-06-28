@@ -12,17 +12,17 @@ use App\Provider\ReolinkProvider;
  */
 class ApiController extends AppController
 {
-	public function test()
-	{
-		$provider = new ReolinkProvider('CamFlur');
-		$x = $provider->sendRequest('GetEmailV20');
-		$y = $provider->sendRequest('GetPushV20');
+	// public function test()
+	// {
+	// 	$provider = new ReolinkProvider('CamFlur');
+	// 	$x = $provider->sendRequest('GetEmailV20');
+	// 	$y = $provider->sendRequest('GetPushV20');
 
 
-		echo "<pre>";
-		print_r([$x->getJson()[0], $y->getJson()[0], ReolinkProvider::$tokens]);
-		exit;
-	}
+	// 	echo "<pre>";
+	// 	print_r([$x->getJson()[0], $y->getJson()[0]]);
+	// 	exit;
+	// }
 
 	public function event(string $eventName)
 	{
