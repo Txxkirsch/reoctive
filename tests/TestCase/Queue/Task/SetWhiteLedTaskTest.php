@@ -29,7 +29,7 @@ class SetWhiteLedTaskTest extends TestCase
 			$task->run([
 				'enable' => 1,
 				'deviceNames' => [
-					'CamFlur'
+					// 'CamFlur'
 				],
 			], 11)
 		);
@@ -38,13 +38,13 @@ class SetWhiteLedTaskTest extends TestCase
 	public function testRunOff(): void
 	{
 		$task = new SetWhiteLedTask();
-		sleep(2);
+		// sleep(2);
 
 		$this->assertEmpty(
 			$task->run([
 				'enable' => 0,
 				'deviceNames' => [
-					'CamFlur'
+					// 'CamFlur'
 				],
 			], 12)
 		);

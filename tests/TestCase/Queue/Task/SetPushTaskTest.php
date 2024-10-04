@@ -19,11 +19,16 @@ class SetPushTaskTest extends TestCase
 	/**
 	 * @return void
 	 */
-	// public function testRun(): void {
-	// 	$task = new SetPushTask();
+	public function testRun(): void
+	{
+		$task = new SetPushTask();
 
-	// 	//TODO
-	// 	//$task->run($data, $jobId);
-	// }
-
+		//TODO
+		$this->assertEmpty(
+			$task->run([
+				'enable' => 1,
+				'deviceNames' => [],
+			], 11)
+		);
+	}
 }

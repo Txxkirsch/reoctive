@@ -21,11 +21,16 @@ class SetEmailAndPushTaskTest extends TestCase
 	/**
 	 * @return void
 	 */
-	// public function testRun(): void
-	// {
-	// 	$task = new SetEmailAndPushTask();
+	public function testRun(): void
+	{
+		$task = new SetEmailAndPushTask();
 
-	// 	//TODO
-	// 	//$task->run($data, $jobId);
-	// }
+		//TODO
+		$this->assertEmpty(
+			$task->run([
+				'enable' => 1,
+				'deviceNames' => [],
+			], 11)
+		);
+	}
 }
