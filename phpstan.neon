@@ -1,6 +1,8 @@
 parameters:
     level: 8
+    scanFiles:
+      - config/paths.php
     treatPhpDocTypesAsCertain: false
-    checkGenericClassInNonGenericObjectType: false
     paths:
         - src/
+        - plugins/

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -14,6 +15,7 @@ declare(strict_types=1);
  * @since     3.0.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Console;
 
 if (!defined('STDIN')) {
@@ -65,8 +67,28 @@ class Installer
         static::setFolderPermissions($rootDir, $io);
         static::setSecuritySalt($rootDir, $io);
 
+        static::createDeviceListFile($rootDir, $io);
+
         if (class_exists(CodeceptionInstaller::class)) {
             CodeceptionInstaller::customizeCodeceptionBinary($event);
+        }
+    }
+
+    /**
+     * Create the `devices.json` file if it does not exist.
+     *
+     * @param string $dir The application's root directory.
+     * @param \Composer\IO\IOInterface $io IO interface to write to console.
+     * @return void
+     */
+    public static function createDeviceListFile(string $dir, IOInterface $io): void
+    {
+        $devicesFile = $dir . '/config/devices.json';
+
+        if (!file_exists($devicesFile)) {
+            file_put_contents($devicesFile, json_encode([], JSON_PRETTY_PRINT));
+            @chmod($devicesFile, 0777);
+            $io->write('Created `config/devices.json` file');
         }
     }
 
@@ -153,7 +175,6 @@ class Installer
         };
 
         $walker = function (string $dir) use (&$walker, $changePerms): void {
-            /** @phpstan-ignore-next-line */
             $files = array_diff(scandir($dir), ['.', '..']);
             foreach ($files as $file) {
                 $path = $dir . '/' . $file;

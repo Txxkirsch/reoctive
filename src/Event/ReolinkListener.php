@@ -14,43 +14,60 @@ use Cake\ORM\Locator\LocatorAwareTrait;
 
 class ReolinkListener implements EventListenerInterface
 {
-	use LocatorAwareTrait;
+    use LocatorAwareTrait;
 
-	public function implementedEvents(): array
-	{
-		return [
-			'Reoctive.activate'   => 'activate',
-			'Reoctive.deactivate' => 'deactivate',
-		];
-	}
+    public function implementedEvents(): array
+    {
+        return [
+            'Reoctive.activate'   => 'activate',
+            'Reoctive.deactivate' => 'deactivate',
+        ];
+    }
 
-	public function activate(Event $event, array $requestData, array $options): Event
-	{
-		/** @var \Queue\Model\Table\QueuedJobsTable $QueuedJobs */
-		$QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
 
-		$deviceNames = array_keys(Configure::read('Reolink', []));
+    /**
+     * @param Event $event
+     * @param mixed[] $requestData
+     * @param mixed[] $options
+     * 
+     * @return Event
+     * @phpstan-ignore-next-line
+     */
+    public function activate(Event $event, array $requestData, array $options): Event
+    {
+        /** @var \Queue\Model\Table\QueuedJobsTable $QueuedJobs */
+        $QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
 
-		$QueuedJobs->createJob(SetEmailAndPushTask::class, [
-			'deviceNames' => $deviceNames,
-			'enable' => 1,
-		]);
+        $deviceNames = array_keys(Configure::read('Reolink', []));
 
-		return $event;
-	}
+        $QueuedJobs->createJob(SetEmailAndPushTask::class, [
+            'deviceNames' => $deviceNames,
+            'enable' => 1,
+        ]);
 
-	public function deactivate(Event $event, array $requestData, array $options): Event
-	{
-		/** @var \Queue\Model\Table\QueuedJobsTable $QueuedJobs */
-		$QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
+        return $event;
+    }
 
-		$deviceNames = array_keys(Configure::read('Reolink', []));
+    /**
+     * @param Event $event
+     * @param mixed[] $requestData
+     * @param mixed[] $options
+     * 
+     * @return Event
+     * @phpstan-ignore-next-line
+     */
+    public function deactivate(Event $event, array $requestData, array $options): Event
+    {
+        /** @var \Queue\Model\Table\QueuedJobsTable $QueuedJobs */
+        $QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
 
-		$QueuedJobs->createJob(SetEmailAndPushTask::class, [
-			'deviceNames' => $deviceNames,
-			'enable' => 0,
-		]);
+        $deviceNames = array_keys(Configure::read('Reolink', []));
 
-		return $event;
-	}
+        $QueuedJobs->createJob(SetEmailAndPushTask::class, [
+            'deviceNames' => $deviceNames,
+            'enable' => 0,
+        ]);
+
+        return $event;
+    }
 }

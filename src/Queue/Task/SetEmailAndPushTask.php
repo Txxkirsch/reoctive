@@ -26,6 +26,11 @@ class SetEmailAndPushTask extends Task
         }
     }
 
+    /**
+     * @param array<string,mixed> $data
+     * 
+     * @return array<string,mixed>
+     */
     protected function getEmailData(array $data): array
     {
         return [
@@ -44,6 +49,11 @@ class SetEmailAndPushTask extends Task
         ];
     }
 
+    /**
+     * @param array<string,mixed> $data
+     * 
+     * @return array<string,mixed>
+     */
     protected function getPushData(array $data): array
     {
         return [

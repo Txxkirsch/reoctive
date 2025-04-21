@@ -17,6 +17,7 @@ class ReolinkProvider
 
     protected readonly string $url;
 
+    /** @var string[] $tokens */
     protected static array $tokens = [];
 
     public function __construct(protected readonly string $device)
@@ -78,6 +79,12 @@ class ReolinkProvider
         return true;
     }
 
+    /**
+     * @param string $cmd
+     * @param mixed[] $data
+     * 
+     * @return Response
+     */
     public function sendRequest(string $cmd, array $data = []): Response
     {
         $client = new Client([

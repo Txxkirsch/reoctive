@@ -19,6 +19,7 @@
         "cakephp/cakephp-codesniffer": "^5.0",
         "cakephp/debug_kit": "^5.0.0",
         "josegonzalez/dotenv": "^4.0",
+        "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^10.1.0"
     },
     "suggest": {
@@ -45,10 +46,15 @@
             "@test",
             "@cs-check"
         ],
-        "cs-check": "phpcs --colors -p",
-        "cs-fix": "phpcbf --colors -p",
         "stan": "phpstan analyse",
-        "test": "phpunit --colors=always"
+        "test": "phpunit --colors=always",
+        "cs-check": "phpcs --colors --parallel=16 -p src/ tests/",
+        "cs-fix": "phpcbf --colors --parallel=16 -p src/ tests/",
+        "phpstan": "phpstan analyse",
+        "psalm": "tools/psalm --show-info=false",
+        "stan-tests": "tools/phpstan analyze -c tests/phpstan.neon",
+        "stan-baseline": "tools/phpstan --generate-baseline",
+        "stan-setup": "phive install"
     },
     "config": {
         "platform-check": true,

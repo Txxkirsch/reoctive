@@ -97,8 +97,6 @@ if (file_exists(CONFIG . 'app_local.php')) {
     Configure::load('app_local', 'default');
 }
 
-touch(CONFIG . 'devices.json');
-chmod(CONFIG . 'devices.json', 0777);
 $devices = json_decode(file_get_contents(CONFIG . 'devices.json') ?: '{}', true);
 Configure::write('Reolink', $devices);
 

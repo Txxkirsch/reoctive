@@ -50,7 +50,7 @@ class AppController extends Controller
         parent::initialize();
 
         $this->loadComponent('Flash');
-
+        /** @phpstan-ignore-next-line */
         $this->QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
 
         /*
