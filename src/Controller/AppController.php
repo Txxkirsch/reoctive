@@ -34,39 +34,54 @@ use Queue\Model\Table\QueuedJobsTable;
  */
 class AppController extends Controller
 {
-	protected QueuedJobsTable $QueuedJobs;
+    protected QueuedJobsTable $QueuedJobs;
 
-	/**
-	 * Initialization hook method.
-	 *
-	 * Use this method to add common initialization code like loading components.
-	 *
-	 * e.g. `$this->loadComponent('FormProtection');`
-	 *
-	 * @return void
-	 */
-	public function initialize(): void
-	{
-		parent::initialize();
+    /**
+     * Initialization hook method.
+     *
+     * Use this method to add common initialization code like loading components.
+     *
+     * e.g. `$this->loadComponent('FormProtection');`
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
 
-		$this->loadComponent('Flash');
+        $this->loadComponent('Flash');
 
-		$this->QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
+        $this->QueuedJobs = $this->fetchTable('Queue.QueuedJobs');
 
-		/*
+        /*
          * Enable the following component for recommended CakePHP form protection settings.
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
-		//$this->loadComponent('FormProtection');
-	}
+        //$this->loadComponent('FormProtection');
+    }
 
-	public function beforeFilter(EventInterface $event)
-	{
-		if (
-			!empty(Configure::read('Api.password'))  &&
-			Configure::read('Api.password') !== $this->request->getQuery('pw', null)
-		) {
-			throw new Exception('Invalid password');
-		}
-	}
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        if (
+            !empty(Configure::read('Api.password'))  &&
+            Configure::read('Api.password') !== $this->request->getQuery('pw', null) &&
+            $this->__checkCookie() === false
+        ) {
+            throw new Exception('Invalid password');
+        }
+
+        if ($this->__checkCookie() === false) {
+            $this->response = $this->response->withCookie(\Cake\Http\Cookie\Cookie::create(
+                'reoctive',
+                md5(md5('evitcoer') . 'reoctive'),
+            ));
+        }
+    }
+
+    private function __checkCookie(): bool
+    {
+        return $this->getRequest()->getCookie('reoctive') === md5(md5('evitcoer') . 'reoctive');
+    }
 }

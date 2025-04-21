@@ -67,11 +67,11 @@ require CAKE . 'functions.php';
  * for more information for recommended practices.
 */
 if (!env('APP_NAME') && file_exists(CONFIG . '.env')) {
-	$dotenv = new \josegonzalez\Dotenv\Loader([CONFIG . '.env']);
-	$dotenv->parse()
-		->putenv()
-		->toEnv()
-		->toServer();
+    $dotenv = new \josegonzalez\Dotenv\Loader([CONFIG . '.env']);
+    $dotenv->parse()
+        ->putenv()
+        ->toEnv()
+        ->toServer();
 }
 
 /*
@@ -83,10 +83,10 @@ if (!env('APP_NAME') && file_exists(CONFIG . '.env')) {
  * that changes from configuration that does not. This makes deployment simpler.
  */
 try {
-	Configure::config('default', new PhpConfig());
-	Configure::load('app', 'default', false);
+    Configure::config('default', new PhpConfig());
+    Configure::load('app', 'default', false);
 } catch (\Exception $e) {
-	exit($e->getMessage() . "\n");
+    exit($e->getMessage() . "\n");
 }
 
 /*
@@ -94,7 +94,7 @@ try {
  * Notice: For security reasons app_local.php **should not** be included in your git repo.
  */
 if (file_exists(CONFIG . 'app_local.php')) {
-	Configure::load('app_local', 'default');
+    Configure::load('app_local', 'default');
 }
 
 touch(CONFIG . 'devices.json');
@@ -107,10 +107,10 @@ Configure::write('Reolink', $devices);
  * for a short time.
  */
 if (Configure::read('debug')) {
-	Configure::write('Cache._cake_model_.duration', '+2 minutes');
-	Configure::write('Cache._cake_core_.duration', '+2 minutes');
-	// disable router cache during development
-	Configure::write('Cache._cake_routes_.duration', '+2 seconds');
+    Configure::write('Cache._cake_model_.duration', '+2 minutes');
+    Configure::write('Cache._cake_core_.duration', '+2 minutes');
+    // disable router cache during development
+    Configure::write('Cache._cake_routes_.duration', '+2 seconds');
 }
 
 /*
@@ -140,7 +140,7 @@ ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
  * Include the CLI bootstrap overrides.
  */
 if (PHP_SAPI === 'cli') {
-	require CONFIG . 'bootstrap_cli.php';
+    require CONFIG . 'bootstrap_cli.php';
 }
 
 /*
@@ -149,7 +149,7 @@ if (PHP_SAPI === 'cli') {
  */
 $fullBaseUrl = Configure::read('App.fullBaseUrl');
 if (!$fullBaseUrl) {
-	/*
+    /*
      * When using proxies or load balancers, SSL/TLS connections might
      * get terminated before reaching the server. If you trust the proxy,
      * you can enable `$trustProxy` to rely on the `X-Forwarded-Proto`
@@ -157,21 +157,21 @@ if (!$fullBaseUrl) {
      *
      * See also https://book.cakephp.org/4/en/controllers/request-response.html#trusting-proxy-headers
      */
-	$trustProxy = false;
+    $trustProxy = false;
 
-	$s = null;
-	if (env('HTTPS') || ($trustProxy && env('HTTP_X_FORWARDED_PROTO') === 'https')) {
-		$s = 's';
-	}
+    $s = null;
+    if (env('HTTPS') || ($trustProxy && env('HTTP_X_FORWARDED_PROTO') === 'https')) {
+        $s = 's';
+    }
 
-	$httpHost = env('HTTP_HOST');
-	if (isset($httpHost)) {
-		$fullBaseUrl = 'http' . $s . '://' . $httpHost;
-	}
-	unset($httpHost, $s);
+    $httpHost = env('HTTP_HOST');
+    if (isset($httpHost)) {
+        $fullBaseUrl = 'http' . $s . '://' . $httpHost;
+    }
+    unset($httpHost, $s);
 }
 if ($fullBaseUrl) {
-	Router::fullBaseUrl($fullBaseUrl);
+    Router::fullBaseUrl($fullBaseUrl);
 }
 unset($fullBaseUrl);
 
@@ -188,14 +188,14 @@ Security::setSalt(Configure::consume('Security.salt'));
  * and the mobiledetect package from composer.json.
  */
 ServerRequest::addDetector('mobile', function ($request) {
-	$detector = new \Detection\MobileDetect();
+    $detector = new \Detection\MobileDetect();
 
-	return $detector->isMobile();
+    return $detector->isMobile();
 });
 ServerRequest::addDetector('tablet', function ($request) {
-	$detector = new \Detection\MobileDetect();
+    $detector = new \Detection\MobileDetect();
 
-	return $detector->isTablet();
+    return $detector->isTablet();
 });
 
 /*

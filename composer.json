@@ -10,6 +10,8 @@
         "cakephp/migrations": "^4.0.0",
         "cakephp/plugin-installer": "^2.0",
         "dereuromark/cakephp-queue": "^8.0",
+        "dereuromark/cakephp-templating": "^0.2.7",
+        "dereuromark/cakephp-tools": "^3.10",
         "mobiledetect/mobiledetectlib": "^3.74"
     },
     "require-dev": {
