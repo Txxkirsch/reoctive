@@ -8,6 +8,7 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\Core\Configure;
 
 /**
  * RemoveDevice command.
@@ -37,7 +38,10 @@ class RemoveDeviceCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $devices = json_decode(file_get_contents(CONFIG . 'devices.json') ?: '{}', true);
+        $devices = json_decode(
+            file_get_contents(Configure::read('Devices.file')) ?: '{}',
+            true
+        );
 
         if (!count($devices)) {
             $io->abort('No devices configured', static::CODE_SUCCESS);
@@ -64,7 +68,10 @@ class RemoveDeviceCommand extends Command
 
         unset($devices[$deviceList[$deviceIndex]]);
 
-        $save = file_put_contents(CONFIG . 'devices.json', json_encode($devices, JSON_PRETTY_PRINT));
+        $save = file_put_contents(
+            Configure::read('Devices.file'),
+            json_encode($devices, JSON_PRETTY_PRINT)
+        );
 
         if (!$save) {
             $io->abort('Error removing device');

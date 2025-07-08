@@ -8,6 +8,7 @@ use Cake\Command\Command;
 use Cake\Console\Arguments;
 use Cake\Console\ConsoleIo;
 use Cake\Console\ConsoleOptionParser;
+use Cake\Core\Configure;
 
 /**
  * ListDevices command.
@@ -44,7 +45,10 @@ class ListDevicesCommand extends Command
      */
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $devices = json_decode(file_get_contents(CONFIG . 'devices.json') ?: '{}', true);
+        $devices = json_decode(
+            file_get_contents(Configure::read('Devices.file')) ?: '{}',
+            true
+        );
 
         if (!count($devices)) {
             $io->abort('No devices configured', static::CODE_SUCCESS);

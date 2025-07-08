@@ -18,6 +18,10 @@ return [
      */
     'debug'          => filter_var(env('DEBUG', false), FILTER_VALIDATE_BOOLEAN),
 
+    'Devices' => [
+        'file' => CONFIG . 'devices.json',
+    ],
+
     /*
      * Configure basic information about the application.
      *
